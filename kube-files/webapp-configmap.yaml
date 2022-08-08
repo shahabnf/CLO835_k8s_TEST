@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webapp-config
+data:
+  group: Group1
+  fail_url: "s3://clo835-g1-img/failed.png"
+  success_url: "s3://clo835-g1-img/success.jpg"

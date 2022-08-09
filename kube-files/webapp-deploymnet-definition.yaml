@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webapp-mysql
+  labels:
+    name: simple-webapp-mysql
+spec:
+  selector:
+    matchLabels:
+      name: simple-webapp-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: simple-webapp-mysql
+    spec:
+      containers:
+      - name: simple-webapp-mysql
+        image: 228064520835.dkr.ecr.us-east-1.amazonaws.com/simple-webapp-mysql:test
+        ports:
+        - containerPort: 81
+        env:
+        - name: GROUP_NAME
+          valueFrom: 
+            configMapKeyRef:
+              name: webapp-config
+              key: group
+        - name: FAIL_URL
+          valueFrom: 
+            configMapKeyRef:
+              name: webapp-config
+              key: fail_url
+        - name: SUCCESS_URL
+          valueFrom: 
+            configMapKeyRef:
+              name: webapp-config
+              key: success_url
+        volumeMounts:
+        - name: app-secret-volumes
+          mountPath: "/opt/app-secret-volumes"
+          readOnly: true
+        envFrom:
+          - secretRef:
+              name: app-secret
+      volumes:
+        - name: app-secret-volumes
+          secret:
+            secretName: app-secret

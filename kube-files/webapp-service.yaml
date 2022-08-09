@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     name: simple-webapp-mysql
-  type: NodePort
+  type: LoadBalancer
   ports:
   - port: 81
     targetPort: 81
